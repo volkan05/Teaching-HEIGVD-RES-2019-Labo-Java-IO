@@ -18,32 +18,32 @@ public class DFSFileExplorer implements IFileExplorer {
 
   @Override
   public void explore(File rootDirectory, IFileVisitor vistor) {
-    // Vérifie qu'un dossier racine est entré en paramètre
+    // Check that the root directory exists
     if(rootDirectory == null){
       return;
     }
 
-    // Le dossier racine est visité
+    // Root directory is visited
     vistor.visit(rootDirectory);
 
-    // Vérifie que le dossier fourni soit bien un dossier afin de le parcourir
+    // Check that the root directory is a directory and not anything else
     if(rootDirectory.isDirectory()){
-      // va contenir tous les fichiers du dossier
+      // Creating of an array which contains all files of the directory
       File[] tabOfFiles = rootDirectory.listFiles();
 
-      // Vérifie que le dossier contienne quelque chose (dossiers ou fichiers)
+      // Check if the array contains files
       if(tabOfFiles == null){
         return;
       }
 
       Arrays.sort(tabOfFiles);
 
-      // Chaque dossier ou fichier du dossier racine est parcouru pour leur traitement
+      // Every files or directories are processed
       for(File files : tabOfFiles){
-        // Si c'est un fichier, on le traite
+        // If it's a file, it will be processed
         if(files.isFile()){
           vistor.visit(files);
-          // Si c'est un dossier, on l'explore à son tour
+          // If it's a directory, it will be explore
         }else{
           explore(files, vistor);
         }

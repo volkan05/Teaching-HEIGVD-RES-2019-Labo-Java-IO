@@ -7,10 +7,8 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import ch.heigvd.res.labio.quotes.Quote;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+
+import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
@@ -84,12 +82,10 @@ public class Application implements IApplication {
     QuoteClient client = new QuoteClient();
     for (int i = 0; i < numberOfQuotes; i++) {
       Quote quote = client.fetchQuote();
-      /* There is a missing piece here!
-       * As you can see, this method handles the first part of the lab. It uses the web service
-       * client to fetch quotes. We have removed a single line from this method. It is a call to
-       * one method provided by this class, which is responsible for storing the content of the
-       * quote in a text file (and for generating the directories based on the tags).
-       */
+
+      // Store the quote by giving it a name
+      storeQuote(quote, "quote-"+i+".utf8");
+
       LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
       for (String tag : quote.getTags()) {
         LOG.info("> " + tag);
@@ -123,7 +119,33 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    // Will represent the path to the quote with tags as directories
+    String pathToQuote = WORKSPACE_DIRECTORY;
+
+    // Directories name is built with tags
+      for(String tag : quote.getTags()){
+        pathToQuote += File.separator + tag;
+      }
+
+      // This is a protection for all writing on disk
+      try{
+         // Directories and subdirectories are created
+         File directoriesToQuote = new File(pathToQuote);
+         directoriesToQuote.mkdirs();
+
+         // The path to the quote with the file name is built
+         String pathIncludingQuoteFile = pathToQuote + File.separator + filename;
+
+         // A writer on file is open to write inside and close it
+        OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(pathIncludingQuoteFile), "UTF-8");
+        writer.write(quote.getQuote());
+        writer.close();
+
+        // Every input/output exception is catched
+      }catch (IOException except){
+        LOG.log(Level.SEVERE, "Error. Cannot writing on disk");
+        throw new IOException("Error. Cannot writing on disk");
+      }
   }
   
   /**
