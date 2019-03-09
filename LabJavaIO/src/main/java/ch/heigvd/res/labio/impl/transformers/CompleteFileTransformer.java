@@ -1,5 +1,8 @@
 package ch.heigvd.res.labio.impl.transformers;
 
+import ch.heigvd.res.labio.impl.filters.FileNumberingFilterWriter;
+import ch.heigvd.res.labio.impl.filters.UpperCaseFilterWriter;
+
 import java.io.Writer;
 
 /**
@@ -15,7 +18,6 @@ public class CompleteFileTransformer extends FileTransformer {
 
   @Override
   public Writer decorateWithFilters(Writer writer) {
-
     writer = new FileNumberingFilterWriter(new UpperCaseFilterWriter(writer));
     return writer; 
   }
