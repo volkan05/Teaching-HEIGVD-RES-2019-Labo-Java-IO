@@ -40,7 +40,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-      for(int i = 0; i < len; ++i){
+      for(int i = off; i < off + len; ++i){
         write(cbuf[i]);
       }
   }
@@ -49,13 +49,15 @@ public class FileNumberingFilterWriter extends FilterWriter {
   public void write(int c) throws IOException {
     final String LINE_NUMBER_CONVERTED = String.valueOf(lineCpt);
       if(lineCpt == 1 || c != NEWLINE && previousChar == CARRIAGE_RETURN){
-        super.write(LINE_NUMBER_CONVERTED + TAB, 0, String.valueOf(lineCpt++).length());
+        super.write(LINE_NUMBER_CONVERTED, 0, String.valueOf(lineCpt++).length());
+        super.write(TAB);
       }
 
       super.write(c);
 
       if(c == NEWLINE){
-        super.write(LINE_NUMBER_CONVERTED + TAB, 0, String.valueOf(lineCpt++).length());
+        super.write(LINE_NUMBER_CONVERTED, 0, String.valueOf(lineCpt++).length());
+        super.write(TAB);
       }
       previousChar = c;
   }

@@ -37,6 +37,7 @@ public class Utils {
       }
 
       if(!isSeparator) {
+          resultNextLine[0] = "";
         resultNextLine[1] = lines;
       }
 
