@@ -19,6 +19,16 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
+  // Initialised to 1 because counting lines in a text always starts to 1
+  private int lineCpt = 1;
+  // Detect separator combination
+  private int previousChar = 0;
+
+  // Separators applicated in a text
+  private static final char NEWLINE = '\n';
+  private static final char CARRIAGE_RETURN = '\r';
+  private static final char TAB = '\t';
+
   public FileNumberingFilterWriter(Writer out) {
     super(out);
   }
@@ -37,7 +47,17 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-      
+    final String LINE_NUMBER_CONVERTED = String.valueOf(lineCpt);
+      if(lineCpt == 1 || c != NEWLINE && previousChar == CARRIAGE_RETURN){
+        super.write(LINE_NUMBER_CONVERTED + TAB, 0, String.valueOf(lineCpt++).length());
+      }
+
+      super.write(c);
+
+      if(c == NEWLINE){
+        super.write(LINE_NUMBER_CONVERTED + TAB, 0, String.valueOf(lineCpt++).length());
+      }
+      previousChar = c;
   }
 
 }

@@ -9,6 +9,10 @@ import java.util.logging.Logger;
 public class Utils {
 
   private static final Logger LOG = Logger.getLogger(Utils.class.getName());
+  private static final int NUMBER_OF_LINE = 2;
+  private static final String MAC = "\r";
+  private static final String UNIX = "\n";
+  private static final String WINDOWS = "\r\n";
 
   /**
    * This method looks for the next new line separators (\r, \n, \r\n) to extract
@@ -20,7 +24,22 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
+      String[] resultNextLine = new String[NUMBER_OF_LINE];
+      String[] separators = {MAC, UNIX, WINDOWS};
+      boolean isSeparator = false;
 
+      for(int i = 0; i < separators.length; ++i){
+        if(lines.contains(separators[i])){
+          resultNextLine = lines.split(separators[i], NUMBER_OF_LINE);
+          resultNextLine[0] += separators[i];
+          isSeparator = true;
+        }
+      }
+
+      if(!isSeparator) {
+        resultNextLine[1] = lines;
+      }
+
+      return resultNextLine;
+  }
 }
