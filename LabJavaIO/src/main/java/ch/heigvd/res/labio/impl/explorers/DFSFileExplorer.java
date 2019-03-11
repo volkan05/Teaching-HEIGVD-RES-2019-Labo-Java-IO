@@ -12,7 +12,7 @@ import java.util.Arrays;
  * node (file and directory). When the explorer reaches a directory, it visits all
  * files in the directory and then moves into the subdirectories.
  * 
- * @author Olivier Liechti
+ * @author Olivier Liechti, Volkan Sutcu
  */
 public class DFSFileExplorer implements IFileExplorer {
 
@@ -40,13 +40,7 @@ public class DFSFileExplorer implements IFileExplorer {
 
       // Every files or directories are processed
       for(File files : tabOfFiles){
-        // If it's a file, it will be processed
-        if(files.isFile()){
-          vistor.visit(files);
-          // If it's a directory, it will be explore
-        }else{
           explore(files, vistor);
-        }
       }
     }
   }

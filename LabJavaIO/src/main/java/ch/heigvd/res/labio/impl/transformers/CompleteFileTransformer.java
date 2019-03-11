@@ -12,12 +12,13 @@ import java.io.Writer;
  * generate an output file with 1) uppercase letters and 2) line numbers at the
  * beginning of each line.
  * 
- * @author Olivier Liechti
+ * @author Olivier Liechti, Volkan Sutcu
  */
 public class CompleteFileTransformer extends FileTransformer {
 
   @Override
   public Writer decorateWithFilters(Writer writer) {
+    // Writer which allows to decorate the content of file
     writer = new FileNumberingFilterWriter(new UpperCaseFilterWriter(writer));
     return writer; 
   }

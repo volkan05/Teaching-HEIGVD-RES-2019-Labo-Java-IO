@@ -15,7 +15,7 @@ import org.apache.commons.io.FileUtils;
 
 /**
  *
- * @author Olivier Liechti
+ * @author Olivier Liechti, Volkan Sütcü
  */
 public class Application implements IApplication {
 
@@ -122,7 +122,7 @@ public class Application implements IApplication {
     // Will represent the path to the quote with tags as directories
     String pathToQuote = WORKSPACE_DIRECTORY;
 
-    // Directories name is built with tags
+      // Directories name is built with tags
       for(String tag : quote.getTags()){
         pathToQuote += File.separator + tag;
       }
@@ -139,6 +139,7 @@ public class Application implements IApplication {
          // A writer on file is open to write inside and close it
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(pathIncludingQuoteFile), "UTF-8");
         writer.write(quote.getQuote());
+        writer.flush();
         writer.close();
 
         // Every input/output exception is catched
